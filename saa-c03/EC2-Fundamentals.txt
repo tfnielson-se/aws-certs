@@ -64,12 +64,12 @@ Elastic Compute Cloud
 		all outbound traffic is endorsed by default
 
 - [ ] Classic Ports to know
-  22 = SSH (secure shell) - log into a linux instance
-  21 = FTP (File Transfer Protocol) - upload files into a file share
-  22 = SFTP (Secure File Transfer Protocol) - upload files using SSH
-  80 = HTTP - access unsecured websites
-  443 = HTTPS - access secured websites
-  3389 = RDP (Remote Desktop Protocol) - Lon into a Windows instance
+  	22 = SSH (secure shell) - log into a linux instance
+  	21 = FTP (File Transfer Protocol) - upload files into a file share
+  	22 = SFTP (Secure File Transfer Protocol) - upload files using SSH
+  	80 = HTTP - access unsecured websites
+  	443 = HTTPS - access secured websites
+  	3389 = RDP (Remote Desktop Protocol) - Lon into a Windows instance
 
 - [ ] SSH
 	Allows you to control a remote machine, all using the command line
@@ -77,10 +77,11 @@ Elastic Compute Cloud
 
 - [ ] SSH Troubleshooting
 	There's a connection timeout
-		This is a security group issue. Any timeout (not just for SSH) is related to security groups or a firewall. Ensure your security groups are correctly assigned to your EC2 instance.
+		This is a security group issue. Any timeout (not just for SSH) is related to security groups or a firewall. 
+		Ensure your security groups are correctly assigned to your EC2 instance.
 
 	There's still a connection timeout issue
-		If your security group is properly configured, and you still have connection timeout issues, then that means a corporate firewall or a personal firewall is blocking the connection.
+		If your security group is properly configured, and you still have connection timeout issues, then that means a corporate firewall or a personal 		firewall is blocking the connection.
 
 	SSH does not work on Windows
 		If it says: ssh command not found, that means you have to use Putty
@@ -89,7 +90,7 @@ Elastic Compute Cloud
 		This means the instance is reachable, but no SSH utility is running on the instance
 		Try to restart the instance
 		If it doesn't work, terminate the instance and create a new one.
-    Make sure you're using Amazon Linux 2
+    		Make sure you're using Amazon Linux 2
 
 	Permission denied (publickey,gssapi-keyex,gssapi-with-mic)
 		This means either two things:
