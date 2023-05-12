@@ -126,7 +126,7 @@ Elastic Compute Cloud
 		Cancelling a Spot Request does NOT terminate instances
 		You must first cancel a Spot Request, and then terminate the associated Spot Instances
 
-    - [ ] 	Spot Fleet
+    - [ ] Spot Fleet
 		Spot Fleet = set of Spot Instances + (optional) On-Demand
 		The Spot Fleet will try to meet the target capacity with price constraints
 			Define possible launch pool
