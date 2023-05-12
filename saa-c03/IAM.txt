@@ -1,9 +1,7 @@
-AWS
-
 IAM
+Identity and Access Management
 
 - [ ] IAM
-	** Identity and Access Management
 	Users
 	Groups (users only)
 	Roles
