@@ -70,3 +70,7 @@ Elastic Compute Cloud
   80 = HTTP - access unsecured websites
   443 = HTTPS - access secured websites
   3389 = RDP (Remote Desktop Protocol) - Lon into a Windows instance
+
+- [ ] SSH
+	Allows you to control a remote machine, all using the command line
+	To SSH into Instance: ssh -i <pem-file-name.pem> ec2-user@<ip-address>
