@@ -1,0 +1,19 @@
+AWS
+
+IAM
+
+- [ ] IAM
+	** Identity and Access Management
+	Users
+	Groups (users only)
+	Roles
+- [ ] JSON POLICY STATEMENTS
+	Sid: statement id (optional)
+	Effect: Allow or Deny access
+	Principal: account/user/role to which policy applied to
+	Action: list of actions this policy allows or denies
+	Resource: list of resources to which the actions applied to
+	Condition: conditions for when policy is in effect (optional)
+
+- [ ] What is a proper definition of an IAM Role?
+	An entity that defines a set of permissions for making requests to AWS services and can be used by an AWS services

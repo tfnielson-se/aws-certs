@@ -1,0 +1,72 @@
+EC2 - Fundamentals
+Elastic Compute Cloud
+
+- [ ] EC2
+	Renting Virtual Machines (EC2)
+	Storing Data on VM (EC2)
+	Distributing load across machines (ELB)
+	Scaling the services using auto-scaling group (ASG)
+
+- [ ] EC2 sizing & config
+	Operating Sys
+	How much compute power & cores (CPU)
+	How much random-access memory (RAM)
+	How much storage space:
+		Network-attached (EBS & EFS)
+		Hardware (EC2 Instance Store)
+	Network card: speed of card, Public IP address
+	Firewall rules: security	group
+	Bootstrap script (config at first launch): EC2 user data
+
+- [ ] EC2 User Data
+	it is possible to bootstrap instances using EC2 User Data script
+	EC2 user data is used to automate boot tasks such as:
+		install updated
+		install software
+		download common files from the internet
+		anything you can think of
+	EC2 User Data Script runs with the root user
+
+- [ ] EC2 Instance types
+		i.e, m3.2xl
+			m: instance class
+			5: generation (AWS improves over time)
+			2xlarge: size within instance class
+	General purpose
+		diverse in workloads such as web servers and code repos
+	Compute Optimized
+		compute intensive tasks that require high performance
+	Memory Optimized
+		large data sets in memory
+	Accelerated Computing
+	Storage Optimized
+		storage-intensive tasks that require high, sequential read and write access to large data sets on local storage
+	Instance Features
+	Measuring Instance Performance
+
+- [ ] EC2 Security Groups
+	only contain ALLOW rules
+	control how traffic is allowed in or out of our EC2 Instance
+	can be referenced by IP or by security group
+	act as firewall
+	regulate:
+		access to ports
+		authorized IP ranges - IPv4 and IPv6
+		control inbound and outbound traffic
+	good to know:
+		can be attached to multiple instances
+		locked down to a region / VPC combination
+		does live ‘outside’ EC2 - if traffic is blocked the EC2 instance won’t see it
+		its good to maintain one separate security group for SSH access
+		** if your app is not accessible (time out), then its a security group issue
+		if your app gives ‘connection refused’ error, then its an app error or its not launched
+		all inbound traffic is blocked by default
+		all outbound traffic is endorsed by default
+
+- [ ] Classic Ports to know
+  22 = SSH (secure shell) - log into a linux instance
+  21 = FTP (File Transfer Protocol) - upload files into a file share
+  22 = SFTP (Secure File Transfer Protocol) - upload files using SSH
+  80 = HTTP - access unsecured websites
+  443 = HTTPS - access secured websites
+  3389 = RDP (Remote Desktop Protocol) - Lon into a Windows instance
