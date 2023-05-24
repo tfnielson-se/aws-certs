@@ -155,7 +155,7 @@ Elastic Compute Cloud
 
     How long can you reserve an EC2 Reserved Instance?
     A: 1 or 3 years
-    
+
     You would like to deploy a High-Performance Computing (HPC) application on EC2 instances. Which EC2 instance type should you choose?
     A: Compute Optimized
 
@@ -176,6 +176,6 @@ Elastic Compute Cloud
 
     You're planning to migrate on-premises applications to AWS. Your company has strict compliance requirements that require your applications to run on dedicated servers. You also need to use your own server-bound software license to reduce costs. Which EC2 Purchasing Option is suitable for you?
     A: Dedicated Hosts
-    
+
     You would like to deploy a database technology on an EC2 instance and the vendor license bills you based on the physical cores and underlying network socket visibility. Which EC2 Purchasing Option allows you to get visibility into them?
     A: Dedicated Hosts

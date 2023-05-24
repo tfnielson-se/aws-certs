@@ -1,0 +1,65 @@
+EC2 Assoc. Solutions Architect Level
+- [ ] IPs
+	Public vs IPv4 vs IPv6
+	IPv4 most common
+
+- [ ] Elastic IPs
+	Stop and Start EC2 Instance can change IP address
+	If you have a fixed public IP for your instance you need an Elastic IP
+	Elastic IP is a public IPv4 IP you own as long as you don’t delete it
+	Allows you to mask failures by rapidly remapping the address to another instance
+	You can only have 5 Elastic IPs in your account (you can ask AWS to increase)
+	Avoid using Elastic IP
+		-reflects poor architectural decisions
+		-instead, use a random IP and register a DNS name to it
+
+- [ ]  Placement Groups
+	Instance placement strategy using placement groups
+	Strategies:
+		-  Cluster: clusters instances into a low-latency group in a single Availability Zone (AZ) [same hardware, same rack]
+			+ Pros: Great network
+			- Cons: If rack fails, all instances fails at the same time
+			+- Use Case: Big Data Job that needs fast completion. App that needs low latency and high network throughput
+
+		- Spread: spreads instances across underlying hardware (max 7 instances per AZ) [instances in diff. hardware]
+			+ Pros: span across AZ. Reduce Risk of simultaneous failure.
+			- Cons: Limited to 7 instances per AZ per Placement Group
+			+- Use Case: App that needs to maximize high availability. Critical App where each instance must be isolated from failure from each other
+
+		- Partition: spreads instances across many different partitions (which rely on different sets of racks) within an AZ. Scales to 100s of EC2 Instances per group (Hadoop, Cassandra, Kafka)
+			+ Pros:
+				-Up to 7 partitions per AZ
+				-Can span across multiple AZs in the same region
+				-The instances in a partition do not share racks with the instances in other partitions
+				-A partition failure can affect many EC2 but won’t affect other partitions
+				-EC2 Instances get access to the partitions information as metadata
+			+- Use Case: Big Data App (HDFS, HBase, Cassandra, Kafka)
+
+- [ ] Elastic Network Interfaces (ENI)
+	Gives EC2 instances access to network
+	logic component in a VPC that represents virtual network card
+	ENI Attributes:
+		- (1) Primary Private IPv4, one or more secondary IPv4
+		- (1) Elastic IPv4 per private IPv4
+		- (1) Public IPv4
+		- One or more security groups
+		- A MAC Address
+	You can create EIN independently and attach them on the fly (move them) on EC2 Instances for failover
+	Bound to a specific AZ
+	More Control over IPv4 & networking
+
+- [ ] EC2 Hibernate
+	In memory (RAM) state is preserved
+	The instance boot is much faster!
+	Under the hood: the RAM state is written to a file in the root EBS volume
+	The root EBS volume must be encrypted
+	Use Cases:
+		- Long-running processing
+		- Saving the RAM state
+		- Services that take time to initialize
+	Good to knows:
+		Supported Instance Families - C3, C4, C5. I3, M3, M4. R3, R4, T2, T3, …
+		Instance RAM Size: less than 150GB
+		Root Volume: must be EBS, encrypted, not instance store, and large
+		Available for On-Demand, Reserved, and Spot Instances
+		CAN NOT be hibernated for more than 60 days
