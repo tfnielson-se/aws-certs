@@ -1,0 +1,117 @@
+EC2 Instance Storage
+
+- [ ] EBS Volumes
+    Elastic Book Store
+    Network Drive you can attach to your instances while they run
+    It allows your instances to persist data, evem after their termination
+    Can only be mounted to one instance at a time (at CCP level)
+    Bound to a specific AZ
+        Analogy: 'a network USB stick'
+    Its a netowrk Drive (not physical)
+        - uses network to communicate the instance, potential for latency
+        - Can be detached from one EC2 instance and attached to another quickly
+    Locked to an AZ
+        - to volume move across, you need to snapshot it
+    Have a provisioned capacity (size in GB, and IOPS) (IO Ops Per Second)
+        - get billed for all provisioned capacity
+        - can increase the capacity of the drive over time
+    Delete on Termination Attribute ****
+        - Controls the EBS behavior when an EC2 Instance Terminates
+            by default:
+            [] - the root EBS volumne is deleted (attribute enabled)
+            [] - any other attached EBS volumne is not deleted (attribute disabled)
+        - This can be controlled by the AWS console / AWS CLI
+        Use Case: preserve root volume when instance is termianted
+
+- [ ] EBS Snapshots
+    Make backup (snaphot) of your EBS volume at a point in time
+    Not necessary to detach volume to do snapshot, but recommended
+    Can copy snapshot across AZ or Region
+
+- [ ] EBS Snapshots Features
+    EBS Snapshopt Archive
+        - Move a snapshot to an 'archive' that is 75% cheaper
+        - Takes within 24-72 hrs to restore the archive
+    Recycle bin for EBS Snapshots
+        - Setup rules to retain deleted snapshots so you can recover them after an accidental deletion
+        - Specify retention (from 1 day to 1 year)
+    Fast Snapshot Restore (FSR)
+        - Force full initialization of the snaphot tio have no latency on the first use ($$$)
+
+- [ ] AMI Overview
+    = Amazon Machine Image
+    Customizable EC2 Instance
+        - Add your own software, config, OS, monitoring...
+        - Faster boot / config time because all your software is pre-packaged
+    AMI are built for a specific region (can be copied across regions)
+
+- [ ] AMI Process (from an EC2 instance)
+    1. Start EC2 instance and customize it
+    2. Stop the instance (for data integrity)
+    3. Build an AMI - this will also create EBS snapshots
+    4. Launch instances from other AMIs
+
+- [ ] EC2 Instance Store
+    EBs volumes are network driver with good but 'limited' performance
+    If you need a high-performance hardware disk, use EC2 Instance Store
+    Better I/O performance
+    EC2 Instance Store loses their storage if they're stopped (ephemeral)
+    Good for buffer / cache / scratch data / temporary content
+    ** Risk of data loss if hardware fails
+
+- [ ] EBS Volume Types
+    EBS Volumes are characterized in Size / Throughput / IOPS (I/O Ops Per Sec)
+    When in doubt always consult AWS documentation
+    ** Only gp2/gp3 and io1/io2 can be used as boot volumes
+    6 types:
+
+    ** General Purpose **
+        1/2. gp2/gp3 (SSD): General purpose SSD volume that balances price and performance for a wide variety of workloads
+            Use Cases:
+            - 1GB - 16TiB
+            - Cost effective storage, low-latency
+            - system boot volumes, Virtual Desktops, Development and test Environments
+            - gp3:
+                + Baseline of 3K IOPS and throughput of 125MiB/s
+                + Can increase IOPS up to 16K and throughput up to 100MiB/s independently
+            - gp2:
+                + can burst IOPS to 3K
+                + Size of the volume and IOPS are linked, max IOPS is 16L
+                + 3 IOPS per GB, means at 5,334GB we are at max IOPS
+
+        ** Provisioned IOPS **
+        3/4. io1/io2 (SSD): Highest-perfomace SSD volume for mission-critical low-latency or high-throughput workloads
+            Use Cases:
+            - Critical business applications with sustained IOPS performance
+            - Or applications that need more than 16K IOPS
+            - Great for databases woorloads (sensitive storage perf and consistency)
+            - io1/io2 (4Gib - 16TiB)
+                + Max PIOPS: 64K for Nitro EC2 instances and 32K for other
+                + Can increase PIOPS independently from storage size
+                io2 have more durability and more IOPS per GiB (at the same price as io1)
+            - io2 Block Express (4Gib - 64TiB)
+                + Sub-milisecond latency
+                + Max PIOPS: 256K with an IOPS:GiB ration of 1,000:1
+            - Supports EBS Multi-Attach
+
+        ** Hard Disk Drives (HHD) **
+        4. st1 (HHD): Low cost volume designed for frequent access, throughput-intensive workloads
+        5. sc1 (HHD): Lowest cost HHD volume designed for less frequently accessed workloads
+            Use Cases:
+            - Cannot be a boot volume
+            - 125 GiB to 16TiB
+            - Throughput optimized HHD (st1)
+                + Big Data, Data Warehouses, Log Processing
+                + Max throughput 500MiB/s - max IOPS 500
+            - Cold HHD (sc1)
+                + For data that is infrequently accessed
+                + Scenarios where lowest cost is important
+
+- [ ] EBS Multi-Attach
+    
+
+- [ ] EBS Encryption
+
+- [ ] Amazon EFS
+
+- [ ] EFS vs EBS
