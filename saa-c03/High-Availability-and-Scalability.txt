@@ -1,0 +1,30 @@
+- [ ] High Availability and Scalability: ELB & ASG
+    Scalability
+        - Vertical
+            + Increase size of an instance
+            + Ex: scaling from t2.micro to t2.large
+            + Common for non distruibuted systems, such as database
+            + RDS, ElastiCache are services that scale vertically
+            + Theres usually a limit to how much can you vertically scale (hardware limit)
+
+        - Horizontal ( = elasticity )
+            + Increase the number of instances for your app
+            + Implies scaling distributed systems
+            + Common for web apps / modern applications
+            + It'easy to  scale because of cloud
+            + Scale In: decrease the number of instances
+            + Scale Out: increase the number of instances
+    High Availability
+        Run instances of the same application across multi AZ
+        The goal of high availability is to survive a data center loss
+
+- [ ] ELB = Elastic Load Balancing
+    Evenly distribute users to available EC2 Instances
+    Types:
+        - Application Load Balancer (ALB)
+        - Network Load Balancer (NLB)
+        - Gateway Load Balancer (GWLB)
+
+- [ ] ALB = Application Load Balancing
+    Layer 7 (HTTP)
+    
