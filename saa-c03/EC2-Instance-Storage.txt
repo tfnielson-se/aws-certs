@@ -107,11 +107,124 @@ EC2 Instance Storage
                 + For data that is infrequently accessed
                 + Scenarios where lowest cost is important
 
-- [ ] EBS Multi-Attach
-    
+- [ ] EBS Multi-Attach - io1/io2 family
+    Attacht the same EBS Volume to multiple EC2 instances in the same AZ
+    Each instance has full read & write permissions to the high-performance volume
+    Use Cases:
+        - Achieve higher application availability in clustered Linux applications (Ex. Teradata)
+        - Applications must manage concurrent write operations
+    Up to 16 EC2 Instances at a time
+    Must use a file system that's cluste-aware (not XFS, EXT4, etc...)
 
 - [ ] EBS Encryption
+    When you create an encrypted EBS volume, you get the following:
+        - Data at rest is encrypted inside the volume
+        - All the data in flight moving between the instance and the volume is encrypted
+        - All snapshots are encrypted
+        - All volumes created from the snapshot
+    Encryption has a minimal impact on latency
+    EBS Encryption leverages keys from KMS (AES-256)
+    Copying an unecrypted snapshot allows encryption
+    Snapshots of encrypted volumes are encrypted
 
 - [ ] Amazon EFS
+    = Elastic File System
+    Managed NFS (network file system) that can be mounted on many EC2
+    EFS works with EC2 in multi-AZ
+    Highly available, scalable, expansive (3x gp2), pay per use
+    Use Cases:
+        - Content Management
+        - Web serving
+        - Wordpress
+    Uses NFSv4.1 protocol
+    Uses security group to control access to EFS
+    Compatible with Linux based AMI (not Windows)
+    Encryption at resting with KMS
+    POSIX file system (~Linux) that has a std file API
+    File system scales automatically, pay per use, no capacity planning!
+
+- [ ] EFS Perfomance
+    Scale
+        - 1000s of concurrent NFS clients, 10GB+ /s throughput
+        - Grow to Petabyte-scale network file system, automatically
+    Perfomance Mode
+        - General Purpose (default) - latency sensitive use cases (web servers, CMS, etc...)
+        - Max I/O - higher latency, throughputm highly parrallel (big data, media processing)
+    Throughput Mode
+        - Bursting - 1TB  50MiB/s + burst of up to 100MiB/s
+        - Provisioned - set your throughput regardless of storage size, ex: 1GiB/s for 1TB Storage
+        - Elastic - automatically scales throughput up or down base on your workloads
+            + Up to 3GiB/s for reads and 1BiB/s for writes
+            + Used for unpredictable workloads
+
+- [ ] EFS Storage Classes
+    Storage Tiers (lifecycle management feauture - move file after N days)
+        - Standard: for frequently accessed files
+        - Infrequent Access (EFS-IA): cost to retrieve files, lower price to store. Enable EFS-Ia with a Lifecycle Policy
+    Availability and durability
+        - Standard: Multi-AZ, great for prod
+        - One Zone: One AZ, great for dev, backup enabled by default, compatible with IA (EFS One Zone-IA)
+    Over 90% in cost savings!!!
 
 - [ ] EFS vs EBS
+    EBS
+        - EBS Volumes
+            + One instance (except multi-attach io1/io2)
+            + Are locked at the AZ level
+            + gp2: IO increases if the disk size increases
+            + io1: can increase IO independently
+        - To migrate an EBS volume across AZ
+            + Take Snapshot
+            + Restore the snapshot to another AZ
+            +  EBS backups use IO and you shouldn't run them while your application is handling a lot of traffic
+        - Root EBS Volumes of instances get terminated by default if the EC2 instance gets terminated (you can disable it)
+    EFS
+        - Mounting 100s of instances across AZ
+        - EFS share website files (WordPress)
+        - Only for Linux Instances (POSIX)
+        - Higher price point than EBS
+        - Can leverage EFS-IA for cost savings
+
+- [ ] EC2 Instance Storage Quiz
+    You have just terminated an EC2 instance in us-east-1a, and its attached EBS volume is now available. Your teammate tries to attach it to an EC2 instance in us-east-1b but he can't. What is a possible cause for this?
+    A: EBs volumes are locked to an AZ, EBS Volumes are created for a specific AZ. It is possible to migrate them between different AZs using EBS Snapshots.
+
+    You have launched an EC2 instance with two EBS volumes, Root volume type and the other EBS volume type to store the data. A month later you are planning to terminate the EC2 instance. What's the default behavior that will happen to each EBS volume?
+    A: The Root volume type will be deleted and the EBS volume type will not be deleted
+
+    You can use an AMI in N.Virginia Region us-east-1 to launch an EC2 instance in any AWS Region.
+    A: False ,AMIs are built for a specific AWS Region, they're unique for each AWS Region. You can't launch an EC2 instance using an AMI in another AWS Region, but you can copy the AMI to the target AWS Region and then use it to create your EC2 instances.
+
+    Which of the following EBS volume types can be used as boot volumes when you create EC2 instances?
+    A: gp2, gp3, io1, io2, When creating EC2 instances, you can only use the following EBS volume types as boot volumes: gp2, gp3, io1, io2, and Magnetic (Standard).
+
+    What is EBS Multi-Attach?
+    A:Attach the same EBS volume to multiple EC2 Instances in the same AZ
+
+    You would like to encrypt an unencrypted EBS volume attached to your EC2 instance. What should you do?
+    A: Create an EBS snapshot of your EBS Volume. Copy the snapshot and tick the option to encrypt the copied snapshot. Thenm use the encrypted snapshot to create a new EBS volume
+
+    You have a fleet of EC2 instances distributes across AZs that process a large data set. What do you recommend to make the same data to be accessible as an NFS drive to all of your EC2 instances?
+    A: Use EFS, EFS is a network file system (NFS) that allows you to mount the same file system on EC2 instances that are in different AZs.
+
+    You would like to have a high-performance local cache for your application hosted on an EC2 instance. You don't mind losing the cache upon the termination of your EC2 instance. Which storage mechanism do you recommend as a Solutions Architect?
+    A: Instance Store, EC2 Instance Store provides the best disk I/O performance.
+
+    You are running a high-performance database that requires an IOPS of 310,000 for its underlying storage. What do you recommend?
+    A: Use an EC2 Instance Store, You can run a database on an EC2 instance that uses an Instance Store, but you'll have a problem that the data will be lost if the EC2 instance is stopped (it can be restarted without problems). One solution is that you can set up a replication mechanism on another EC2 instance with an Instance Store to have a standby copy. Another solution is to set up backup mechanisms for your data. It's all up to you how you want to set up your architecture to validate your requirements. In this use case, it's around IOPS, so we have to choose an EC2 Instance Store.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
